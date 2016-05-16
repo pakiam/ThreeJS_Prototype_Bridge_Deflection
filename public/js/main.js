@@ -63,11 +63,12 @@ function init() {
 
     function plane(length, width) {
         var i = 0;
+        var deflectionNumbers=drawDeflection(config.force, config.length, config.stiffness, config.ForcePos);
         return function (v, u) {
             //var arr=drawDeflection(1000000, 5, 100000, config.ForcePos);
             var x = v * length;
             var y = u * width - width / 2; //height/2;
-            var z = -drawDeflection(config.force, config.length, config.stiffness, config.ForcePos)[i];
+            var z = -deflectionNumbers[i];
             i++;
             return new THREE.Vector3(x, y, z);
 
@@ -79,16 +80,16 @@ function init() {
     {
         scene.remove(BridgeLine);
 
-        // recreate cloth geometry
+        // recreate bridge geometry
         BridgeGeometry = new THREE.ParametricGeometry(plane(config.length*10, 6), config.length*10, 1);
         BridgeGeometry.dynamic = true;
 
-        // recreate cloth mesh
+        // recreate bridge mesh
         BridgeLine = new THREE.Mesh( BridgeGeometry, BridgeMaterial );
         BridgeLine.position.set( 0, 0, 0 );
         BridgeLine.castShadow = true;
 
-        scene.add( BridgeLine ); // adds the cloth to the scene
+        scene.add( BridgeLine ); // adds the bridge to the scene
     }
 
     // bridge geometry
